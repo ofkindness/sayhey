@@ -1,0 +1,14 @@
+{
+  "name": "sayhey.xyz",
+  "version": "1.0.0",
+  "description": "Sayhey Website",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha ./test/*"
+  },
+  "author": "ofkindness",
+  "license": "ISC",
+  "dependencies": {
+    "hapi": "^16.1.0"
+  }
+}
