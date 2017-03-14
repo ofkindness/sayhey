@@ -6,8 +6,14 @@ const filter = require('gulp-filter');
 
 const conf = require('../conf/gulp.conf');
 
+gulp.task('assets', assets);
 gulp.task('clean', clean);
 gulp.task('other', other);
+
+function assets() {
+  return gulp.src(path.join(conf.paths.assets, '/**/*'))
+    .pipe(gulp.dest(conf.paths.dist));
+}
 
 function clean() {
   return del([conf.paths.dist, conf.paths.tmp]);

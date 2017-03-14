@@ -7,6 +7,11 @@ const FailPlugin = require('webpack-fail-plugin');
 const autoprefixer = require('autoprefixer');
 
 module.exports = {
+  node: {
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty'
+  },
   module: {
     loaders: [
       {
@@ -37,6 +42,18 @@ module.exports = {
           'react-hot-loader',
           'babel-loader'
         ]
+      },
+      {
+        test: /\.svg(\?.+)?$/,
+        loader: 'file'
+      },
+      {
+        test: /\.png$/,
+        loader: 'url?limit=1000&mimetype=image/png'
+      },
+      {
+        test: /\.gif$/,
+        loader: 'url?limit=1000&mimetype=image/gif'
       }
     ]
   },
