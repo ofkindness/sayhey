@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router';
 import {Header} from './header';
 import {Title} from './title';
 import {Footer} from './footer';
@@ -42,15 +41,6 @@ export class Index extends Component {
         <Header/>
         <main style={styles.main}>
           <Title/>
-          <p style={styles.p}>
-            <Link
-              onClick={this.handleDemoClick()}
-              to={{
-                pathname: '/demo'
-              }}
-              >Попробовать
-            </Link>
-          </p>
         </main>
         <Footer/>
       </div>
