@@ -1,5 +1,5 @@
-logs
-node_modules
-.eslintrc
-*.pid
+.tmp/
+coverage/
+dist/
+node_modules/
 *.log
