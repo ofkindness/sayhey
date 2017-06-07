@@ -1,5 +1,9 @@
 .tmp/
 coverage/
 dist/
+legacy/
+logs/
 node_modules/
+temp/
+*.pid
 *.log

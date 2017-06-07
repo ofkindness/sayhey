@@ -1,0 +1,21 @@
+{
+  "parser": "babel-eslint",
+  "extends": "airbnb/base",
+  "env": {
+    "es6": true,
+    "node": true,
+    "mocha" : true
+  },
+  "ecmaFeatures": {
+    "classes": true,
+    "modules": true
+  },
+  "rules": {
+    // disable requiring trailing commas
+    "comma-dangle": 0,
+    "max-len": ["error", { "code": 120, "ignoreComments": true, "ignoreUrls": true }],
+    "no-underscore-dangle": 0,
+    "jsx-a11y/img-has-alt": 0,
+    "quotes": ["error", "single", { "allowTemplateLiterals": true }]
+  }
+}
