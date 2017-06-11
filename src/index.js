@@ -4,7 +4,7 @@ import { Router, Route, browserHistory } from 'react-router';
 
 import { Index } from './components/layout/index';
 
-import '../public/index.scss';
+import '../public/app.css';
 
 ReactDOM.render(
   <Router history={browserHistory}>

@@ -26,7 +26,9 @@ docker run -e NODE_ENV=development -e TELEGRAM_TOKEN=yourtelegramtoken --name sa
 Start
 -----
 
+```console
 DEBUG=* WEBHOOK_URL=yourapiurl TELEGRAM_TOKEN=yourtelegramtoken npm start
+```
 
 Tests
 -----
