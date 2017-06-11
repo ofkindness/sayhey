@@ -10,8 +10,8 @@ Installation
 ------------
 
 ```console
-  $ git clone https://github.com/ofkindness/sayhey.git
-  $ cd sayhey && npm install
+  $ git clone https://github.com/ofkindness/sayhey.xyz.git
+  $ cd sayhey.xyz && npm i
 ```
 
 Dockerize
@@ -23,11 +23,26 @@ docker build -t sayhey .
 docker run -e NODE_ENV=development -e TELEGRAM_TOKEN=yourtelegramtoken --name sayhey --link redis -p 127.0.0.1:3000:3000 -d sayhey
 ```
 
-Start
+Start frontend
+--------------
+
+```console
+npm start
+```
+
+Build frontend
+--------------
+
+```console
+npm build
+```
+
+
+Start bot
 -----
 
 ```console
-DEBUG=* WEBHOOK_URL=yourapiurl TELEGRAM_TOKEN=yourtelegramtoken npm start
+DEBUG=* WEBHOOK_URL=yourapiurl TELEGRAM_TOKEN=yourtelegramtoken npm run bot
 ```
 
 Tests
