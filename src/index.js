@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Router, Route, browserHistory} from 'react-router';
+import { Router, Route, browserHistory } from 'react-router';
 
-import {Index} from './sayhey/index';
+import { Index } from './components/layout/index';
 
-import './index.scss';
+import '../public/index.scss';
 
 ReactDOM.render(
   <Router history={browserHistory}>
