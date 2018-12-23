@@ -1,21 +1,14 @@
 {
-  "parser": "babel-eslint",
-  "extends": "airbnb/base",
+  "extends": "airbnb",
   "env": {
-    "es6": true,
-    "node": true,
-    "mocha" : true
-  },
-  "ecmaFeatures": {
-    "classes": true,
-    "modules": true
+    "node":true,
+    "mocha":true,
+    "es6": true
   },
   "rules": {
     // disable requiring trailing commas
     "comma-dangle": 0,
-    "max-len": ["error", { "code": 120, "ignoreComments": true, "ignoreUrls": true }],
-    "no-underscore-dangle": 0,
-    "jsx-a11y/img-has-alt": 0,
-    "quotes": ["error", "single", { "allowTemplateLiterals": true }]
+    "max-len": ["error", {"code": 120, "ignoreComments": true, "ignoreUrls": true, "ignoreStrings": true}],
+    "no-unused-vars": ["error", { "argsIgnorePattern": "next" }]
   }
 }

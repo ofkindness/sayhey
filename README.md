@@ -34,7 +34,7 @@ Build frontend
 --------------
 
 ```console
-npm build
+npm run build
 ```
 
 

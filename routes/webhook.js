@@ -1,21 +1,17 @@
-/* eslint no-console: 0 */
-import Debug from 'debug';
-import express from 'express';
-import bot from '../lib/bot';
+const { Router } = require('express');
 
-const debug = Debug('sayhey:webhook');
-const router = express.Router();
+const bot = require('../lib/bot');
+const dispatch = require('../lib/dispatcher');
 
-/* handler for webhook request */
-router.post('/:token', (req, res) => {
-  debug(req.body);
+bot.on('message', msg => dispatch(msg));
 
-  if (req.params.token !== process.env.TELEGRAM_TOKEN) {
-    return res.status(403).end();
-  }
+const router = Router();
+const token = process.env.TELEGRAM_TOKEN || '';
 
+// We are receiving updates at the route below!
+router.post(`/bot${token}`, (req, res) => {
   bot.processUpdate(req.body);
-  return res.sendStatus(200);
+  res.sendStatus(200);
 });
 
-export default router;
+module.exports = router;
