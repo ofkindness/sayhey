@@ -3,6 +3,7 @@
 /**
  * Module dependencies.
  */
+require('dotenv').load({ silent: true });
 
 const debug = require('debug')('sayhey:server');
 const http = require('http');
