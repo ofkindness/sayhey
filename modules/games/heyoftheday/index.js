@@ -1,3 +1,4 @@
+const bugsnag = require('@bugsnag/js');
 const find = require('lodash.find');
 const { format, promisify } = require('util');
 
@@ -7,6 +8,7 @@ const Player = require('../../models/player');
 const { dispatcher } = require('../../bot');
 const { getName } = require('../../utils');
 
+const bugsnagClient = bugsnag(process.env.BUGSNAG_API_KEY);
 const timeout = promisify(setTimeout);
 
 const messages = [{
@@ -45,10 +47,8 @@ dispatcher.command('/hey', async (req, res) => {
     // welcome message
     return res.sendMessage(chatId, format(find(messages, 'welcome').welcome[0].text, getName(initiator)));
   } catch (e) {
-    console.error(e);
+    return bugsnagClient.notify(e);
   }
-
-  return null;
 });
 
 dispatcher.command('/heynour', async (req, res) => {
@@ -56,12 +56,16 @@ dispatcher.command('/heynour', async (req, res) => {
   const member = new Member(chatId);
   const player = new Player(chatId);
 
-  const results = await member.best();
+  try {
+    const results = await member.best();
 
-  if (results.length > 0) {
-    const count = await player.count();
-    return res.sendMessage(chatId, format(find(messages, 'top').top[0].text, results.join('\n'), count));
+    if (results.length > 0) {
+      const count = await player.count();
+      return res.sendMessage(chatId, format(find(messages, 'top').top[0].text, results.join('\n'), count));
+    }
+
+    return res.sendMessage(chatId, `Heynour, ${username}`);
+  } catch (e) {
+    return bugsnagClient.notify(e);
   }
-
-  return res.sendMessage(chatId, `Heynour, ${username}`);
 });

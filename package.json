@@ -9,6 +9,8 @@
     "test": "mocha --recursive"
   },
   "dependencies": {
+    "@bugsnag/js": "^5.1.0",
+    "@bugsnag/plugin-express": "^5.1.0",
     "cookie-parser": "^1.4.3",
     "debug": "^4.1.1",
     "dotenv": "^6.2.0",
