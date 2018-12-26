@@ -1,9 +1,9 @@
-require('../lib/games');
-require('../lib/games/heyoftheday');
+require('../modules/games');
+require('../modules/games/heyoftheday');
 
 const { Router } = require('express');
 
-const { dispatcher } = require('../lib/bot');
+const { dispatcher } = require('../modules/bot');
 
 const router = Router();
 
