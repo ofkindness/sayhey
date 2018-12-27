@@ -1,5 +1,6 @@
 require('../modules/games');
 require('../modules/games/heyoftheday');
+require('../modules/games/roulette');
 require('../modules/games/tomatoes');
 require('../modules/poll');
 

@@ -1,9 +1,9 @@
 const bugsnag = require('@bugsnag/js');
 const { format } = require('util');
 
-const { dispatcher } = require('../bot');
-const Player = require('../models/player');
-const { declOfNum3 } = require('../utils');
+const { dispatcher } = require('../../bot');
+const Player = require('../../models/player');
+const { declOfNum3 } = require('../../utils');
 
 const { notify } = bugsnag(process.env.BUGSNAG_API_KEY);
 
