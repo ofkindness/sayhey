@@ -37,12 +37,13 @@ class Poll {
     return this.client.hgetall(`${this.votePrefix}${votesRoot}`);
   }
 
-  getUserResult(userId) {
-    return this.client.get(`${this.votePrefix}${usersRoot}${userId}`);
+  async getUserResult(userId) {
+    const optionId = parseInt(await this.client.get(`${this.votePrefix}${usersRoot}${userId}`), 10);
+    return { optionId, userNotVoted: Number.isNaN(optionId) };
   }
 
-  known() {
-    return this.client.exists(this.votePrefix + optionsPostfix);
+  async known() {
+    return Boolean(await this.client.exists(this.votePrefix + optionsPostfix));
   }
 
   vote(optionId, userId) {

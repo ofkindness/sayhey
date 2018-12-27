@@ -8,7 +8,7 @@ const Player = require('../../models/player');
 const { dispatcher } = require('../../bot');
 const { getName } = require('../../utils');
 
-const bugsnagClient = bugsnag(process.env.BUGSNAG_API_KEY);
+const { notify } = bugsnag(process.env.BUGSNAG_API_KEY);
 const timeout = promisify(setTimeout);
 
 const messages = [{
@@ -47,7 +47,7 @@ dispatcher.command('/hey', async (req, res) => {
     // welcome message
     return res.sendMessage(chatId, format(find(messages, 'welcome').welcome[0].text, getName(initiator)));
   } catch (e) {
-    return bugsnagClient.notify(e);
+    return notify(e);
   }
 });
 
@@ -66,6 +66,6 @@ dispatcher.command('/heynour', async (req, res) => {
 
     return res.sendMessage(chatId, `Heynour, ${username}`);
   } catch (e) {
-    return bugsnagClient.notify(e);
+    return notify(e);
   }
 });

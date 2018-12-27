@@ -1,3 +1,5 @@
+const { makeChoice } = require('./poll/choice');
+
 const commands = {};
 
 const parseCommand = (msg) => {
@@ -14,6 +16,17 @@ const parseCommand = (msg) => {
   return null;
 };
 
+const messageType = () => 'poll';
+
+const handleChoice = (msg, bot) => {
+  const { message_id: messageId } = msg;
+  switch (messageType(messageId)) {
+    case 'poll':
+    default:
+      return makeChoice(msg, bot);
+  }
+};
+
 //
 const handleCommand = (msg) => {
   const command = parseCommand(msg);
@@ -28,6 +41,7 @@ const handleCommand = (msg) => {
 
 module.exports.Dispatcher = (bot) => {
   bot.on('message', msg => handleCommand(msg));
+  bot.on('callback_query', msg => handleChoice(msg, bot));
 
   return {
     dispatch: msg => bot.processUpdate(msg),

@@ -1,5 +1,6 @@
 require('../modules/games');
 require('../modules/games/heyoftheday');
+require('../modules/poll');
 
 const { Router } = require('express');
 
