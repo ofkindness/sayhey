@@ -1,9 +1,19 @@
+const i18next = require('i18next');
+const i18nextBackend = require('i18next-node-fs-backend');
 const Random = require('random-js');
 const { format } = require('util');
 
 const { dispatcher } = require('../../bot');
 const { getName } = require('../../utils');
 
+const i18nextOptions = {
+  backend: {
+    loadPath: `${__dirname}/../../locales/{{lng}}/{{ns}}.json`
+  },
+  fallbackLng: 'en',
+  ns: ['roulette'],
+  defaultNS: 'roulette'
+};
 const random = new Random(Random.engines.mt19937().autoSeed());
 
 const sendDelayedMessage = bot => (chatId, text, delay = 0) => new Promise((resolve) => {
@@ -18,13 +28,12 @@ const sendDelayedSticker = bot => (chatId, sticker, delay = 0) => new Promise((r
   }, delay);
 });
 
-
 function* generateRound(roundCount, chatId, player, bot) {
-  const firstRound = format('%s выпивает.', getName(player));
-  const thirdRound = format('Беркут, к тебе можно в бане спиной поворачиваться! Повторим?\n- Говно вопрос.');
-  const shoot = '*Стреляется...';
-  const shootPlayer = format('%s cтреляется...', getName(player));
-  const end = format('Молодец, %s.\n%s', getName(player), 'Потешил старика.');
+  const firstRound = format(i18next.t('firstRound'), getName(player));
+  const thirdRound = format(i18next.t('thirdRound'));
+  const shoot = i18next.t('shoot');
+  const shootPlayer = format(i18next.t('shootPlayer'), getName(player));
+  const end = format(i18next.t('end'), getName(player));
 
   if (roundCount === 1) {
     yield sendDelayedMessage(bot)(chatId, firstRound, 1000);
@@ -45,13 +54,12 @@ function* generateRound(roundCount, chatId, player, bot) {
   yield sendDelayedMessage(bot)(chatId, end, 1000);
 }
 
-
 function* rouletteRound(chatId, player, bot) {
-  const init = format('На что же нам с тобой сыграть? А, %s?\nНа томаты!',
+  const init = format(i18next.t('init'),
     (getName(player).indexOf(' ') > 0 ? getName(player) : `@${getName(player)}`));
-  const next = 'Вот это как раз, я и хотел тебе предложить.\nВозьми пистолет,';
-  const start = 'заряди один патрон и дай мне.';
-  const havefun = format('Вот так-то.\nПовеселись, %s.\nИ выпей для храбрости.\n', getName(player));
+  const next = i18next.t('next');
+  const start = i18next.t('start');
+  const havefun = format(i18next.t('havefun'), getName(player));
 
   yield sendDelayedMessage(bot)(chatId, init, 500);
   yield sendDelayedMessage(bot)(chatId, next, 500);
@@ -75,7 +83,10 @@ const exec = (generator, yieldValue) => {
   return next.value;
 };
 
-dispatcher.command('/roulette', (req, res) => {
+dispatcher.command('/roulette', async (req, res) => {
   const { chat: { id: chatId }, from: player } = req;
+  const { language_code: lng } = player;
+  await i18next.use(i18nextBackend).init(Object.assign(i18nextOptions, lng));
+
   return exec(rouletteRound(chatId, player, res));
 });

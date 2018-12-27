@@ -1,35 +1,40 @@
 const bugsnag = require('@bugsnag/js');
-const find = require('lodash.find');
+const i18next = require('i18next');
+const i18nextBackend = require('i18next-node-fs-backend');
 const { format, promisify } = require('util');
 
+const { dispatcher } = require('../../bot');
 const Game = require('../../models/game');
 const Member = require('../../models/member');
 const Player = require('../../models/player');
-const { dispatcher } = require('../../bot');
 const { getName } = require('../../utils');
 
+const i18nextOptions = {
+  backend: {
+    loadPath: `${__dirname}/../../locales/{{lng}}/{{ns}}.json`
+  },
+  fallbackLng: 'en',
+  ns: ['heyoftheday'],
+  defaultNS: 'heyoftheday'
+};
 const { notify } = bugsnag(process.env.BUGSNAG_API_KEY);
 const timeout = promisify(setTimeout);
 
-const messages = [{
-  play: [{ text: 'Winner today is %s' }],
-  top: [{ text: 'TOP 10:\n\n%s\n\nAll players - %s', }],
-  welcome: [{ text: 'Welcome to the game %s' }],
-  winner: [{ text: 'Hey, %s, the winner for today is %s' }]
-}];
-
 dispatcher.command('/hey', async (req, res) => {
   const { chat: { id: chatId }, from: initiator } = req;
+  const { language_code: lng } = initiator;
   const game = new Game(chatId);
   const member = new Member(chatId);
   const player = new Player(chatId);
 
   try {
+    await i18next.use(i18nextBackend).init(Object.assign(i18nextOptions, lng));
+
     if (await player.exists(initiator)) {
       if (await game.exists()) {
         const winner = await game.winner();
 
-        return res.sendMessage(chatId, format(find(messages, 'winner').winner[0].text, getName(initiator), getName(winner)));
+        return res.sendMessage(chatId, format(i18next.t('winner'), getName(initiator), getName(winner)));
       }
       // incr award
       await player.incr(initiator);
@@ -40,31 +45,30 @@ dispatcher.command('/hey', async (req, res) => {
 
       await timeout(2000);
 
-      return res.sendMessage(chatId, format(find(messages, 'play').play[0].text, getName(winner)));
+      return res.sendMessage(chatId, format(i18next.t('play'), getName(winner)));
     }
     // add initiator to the game
     await player.add(initiator);
     // welcome message
-    return res.sendMessage(chatId, format(find(messages, 'welcome').welcome[0].text, getName(initiator)));
+    return res.sendMessage(chatId, format(i18next.t('welcome'), getName(initiator)));
   } catch (e) {
     return notify(e);
   }
 });
 
 dispatcher.command('/heynour', async (req, res) => {
-  const { chat: { id: chatId }, from: { username } } = req;
+  const { chat: { id: chatId }, from: initiator } = req;
+  const { language_code: lng } = initiator;
   const member = new Member(chatId);
   const player = new Player(chatId);
 
   try {
+    await i18next.use(i18nextBackend).init(Object.assign(i18nextOptions, lng));
+
     const results = await member.best();
+    const count = await player.count();
 
-    if (results.length > 0) {
-      const count = await player.count();
-      return res.sendMessage(chatId, format(find(messages, 'top').top[0].text, results.join('\n'), count));
-    }
-
-    return res.sendMessage(chatId, `Heynour, ${username}`);
+    return res.sendMessage(chatId, format(i18next.t('top'), results.join('\n'), count));
   } catch (e) {
     return notify(e);
   }

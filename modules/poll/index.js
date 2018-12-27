@@ -1,23 +1,38 @@
 const bugsnag = require('@bugsnag/js');
+const i18next = require('i18next');
+const i18nextBackend = require('i18next-node-fs-backend');
 const uniq = require('lodash.uniq');
 
 const { dispatcher } = require('../bot');
+const { generateResults } = require('./choice');
 const Poll = require('../models/poll');
-const { msgOptions, getFormattedResult } = require('../utils');
+const { msgOptions } = require('../utils');
 
+const i18nextOptions = {
+  backend: {
+    loadPath: `${__dirname}/../locales/{{lng}}/{{ns}}.json`
+  },
+  fallbackLng: 'en',
+  ns: ['poll'],
+  defaultNS: 'poll',
+  debug: true
+};
 const { notify } = bugsnag(process.env.BUGSNAG_API_KEY);
 
 const defaultOptions = {
-  0: 'Да',
-  1: 'Нет',
-  3: 'Я - томат'
+  0: i18next.t('default0'),
+  1: i18next.t('default1'),
+  3: i18next.t('default3')
 };
-const defaultQuestion = 'Ты меня уважаешь?';
+const defaultQuestion = i18next.t('defaultQuestion');
 
 // create polling according to request, expects input in match as:
 // /poll question? answer1, answer2, ...
 dispatcher.command('/poll', async (req, res) => {
-  const { chat: { id: chatId } } = req;
+  const { chat: { id: chatId }, from: { language_code: lng } } = req;
+
+  await i18next.use(i18nextBackend).init(Object.assign(i18nextOptions, lng));
+
   let { text: input = '' } = req;
 
   // default options needed to create fun poll.
@@ -29,7 +44,7 @@ dispatcher.command('/poll', async (req, res) => {
   if (input.length > 0) {
     // check if any question in request
     if (input.indexOf('?') < 1) {
-      return res.sendMessage(chatId, 'Нет вопроса - нет голосувания!');
+      return res.sendMessage(chatId, i18next.t('emptyQuestion'));
     }
     // getting question from request
     question = input.substr(0, input.indexOf('?') + 1);
@@ -59,7 +74,7 @@ dispatcher.command('/poll', async (req, res) => {
   try {
     const { message_id: voteId } = await res.sendMessage(
       chatId,
-      getFormattedResult(question, options, []),
+      `<strong>${question}</strong>${generateResults(options, [])}`,
       msgOptions(options)
     );
     const poll = new Poll(chatId, voteId);
