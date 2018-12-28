@@ -28,7 +28,7 @@ dispatcher.command('/hey', async (req, res) => {
   const player = new Player(chatId);
 
   try {
-    await i18next.use(i18nextBackend).init(Object.assign(i18nextOptions, lng));
+    await i18next.use(i18nextBackend).init(Object.assign(i18nextOptions, { lng }));
 
     const initiatorId = getId(initiator);
     const initiatorName = getName(initiator);
@@ -68,7 +68,7 @@ dispatcher.command('/heynour', async (req, res) => {
   const player = new Player(chatId);
 
   try {
-    await i18next.use(i18nextBackend).init(Object.assign(i18nextOptions, lng));
+    await i18next.use(i18nextBackend).init(Object.assign(i18nextOptions, { lng }));
 
     const results = await member.best();
     const count = await player.count();

@@ -1,3 +1,4 @@
 {
-  "default": "There is no such command."
+  "default": "There is no such command.",
+  "help": "Rules of the game:\n- Start the game with the command /hey\nThe game takes place only once a day, repeating the command will output only the result.\nYou can always see top results with the command /heynour\nThe game is reset every day at 12 am"
 }

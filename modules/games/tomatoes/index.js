@@ -22,7 +22,7 @@ const { notify } = bugsnag(process.env.BUGSNAG_API_KEY);
 dispatcher.command('/tomatoes', async (req, res) => {
   const { chat: { id: chatId }, from: { language_code: lng } } = req;
 
-  await i18next.use(i18nextBackend).init(Object.assign(i18nextOptions, lng));
+  await i18next.use(i18nextBackend).init(Object.assign(i18nextOptions, { lng }));
 
   const player = new Player(chatId);
 

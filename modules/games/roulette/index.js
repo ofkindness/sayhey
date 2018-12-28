@@ -86,7 +86,7 @@ const exec = (generator, yieldValue) => {
 dispatcher.command('/roulette', async (req, res) => {
   const { chat: { id: chatId }, from: player } = req;
   const { language_code: lng } = player;
-  await i18next.use(i18nextBackend).init(Object.assign(i18nextOptions, lng));
+  await i18next.use(i18nextBackend).init(Object.assign(i18nextOptions, { lng }));
 
   return exec(rouletteRound(chatId, player, res));
 });
