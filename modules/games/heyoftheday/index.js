@@ -7,7 +7,7 @@ const { dispatcher } = require('../../bot');
 const Game = require('../../models/game');
 const Member = require('../../models/member');
 const Player = require('../../models/player');
-const { getName } = require('../../utils');
+const { getName, getId } = require('../../utils');
 
 const i18nextOptions = {
   backend: {
@@ -30,27 +30,32 @@ dispatcher.command('/hey', async (req, res) => {
   try {
     await i18next.use(i18nextBackend).init(Object.assign(i18nextOptions, lng));
 
-    if (await player.exists(initiator)) {
-      if (await game.exists()) {
-        const winner = await game.winner();
+    const initiatorId = getId(initiator);
+    const initiatorName = getName(initiator);
 
-        return res.sendMessage(chatId, format(i18next.t('winner'), getName(initiator), getName(winner)));
+    if (await player.exists(initiatorId)) {
+      if (await game.exists()) {
+        const winnerName = await game.winner();
+
+        return res.sendMessage(chatId, format(i18next.t('winner'), initiatorName, winnerName));
       }
       // incr award
-      await player.incr(initiator);
+      await player.incr(initiatorId);
 
-      const winner = await game.play(getName(initiator));
+      const winnerName = await player.random();
 
-      await member.add(winner);
+      await game.play(winnerName);
+
+      await member.add(winnerName);
 
       await timeout(2000);
 
-      return res.sendMessage(chatId, format(i18next.t('play'), getName(winner)));
+      return res.sendMessage(chatId, format(i18next.t('play'), winnerName));
     }
     // add initiator to the game
-    await player.add(initiator);
+    await player.add(initiatorId, initiatorName);
     // welcome message
-    return res.sendMessage(chatId, format(i18next.t('welcome'), getName(initiator)));
+    return res.sendMessage(chatId, format(i18next.t('welcome'), initiatorName));
   } catch (e) {
     return notify(e);
   }

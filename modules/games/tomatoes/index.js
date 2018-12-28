@@ -10,8 +10,8 @@ const i18nextOptions = {
     loadPath: `${__dirname}/../../locales/{{lng}}/{{ns}}.json`
   },
   fallbackLng: 'en',
-  ns: ['default'],
-  defaultNS: 'default',
+  ns: ['tomatoes'],
+  defaultNS: 'tomatoes',
   debug: true
 };
 const Player = require('../../models/player');

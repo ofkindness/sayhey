@@ -1,4 +1,3 @@
-const { getId, getName } = require('../utils');
 const { redisClient } = require('../redis');
 
 const prefix = 'sh:p:';
@@ -10,11 +9,11 @@ class Player {
     this.client = redisClient;
   }
 
-  add(player) {
-    const { language_code: languageCode } = player;
-    return this.client.multi()
-      .hmset(playerPrefix + getId(player), 'username', getName(player), 'language_code', languageCode)
-      .sadd(prefix + this.chatId, playerPrefix + getId(player))
+  add(playerId, playerName) {
+    const { client, chatId } = this;
+    return client.multi()
+      .hmset(playerPrefix + playerId, 'username', playerName)
+      .sadd(prefix + chatId, playerPrefix + playerId)
       .exec();
   }
 
@@ -22,30 +21,29 @@ class Player {
     return this.client.scard(prefix + this.chatId);
   }
 
-  // TODO prop
   storage() {
     return this.client.tomatoholders(prefix + this.chatId, 100);
   }
 
-  incr(player) {
-    return this.client.hincrby(playerPrefix + getId(player), 'tomatos', 1);
+  incr(playerId) {
+    return this.client.hincrby(playerPrefix + playerId, 'tomatos', 1);
   }
 
-  del(player) {
+  del(playerId) {
     return this.client.multi()
-      .del(playerPrefix + getId(player))
-      .srem(prefix + this.chatId, playerPrefix + getId(player))
+      .del(playerPrefix + playerId)
+      .srem(prefix + this.chatId, playerPrefix + playerId)
       .exec();
   }
 
-  async exists(player) {
-    return Boolean(await this.client.sismember(prefix + this.chatId, playerPrefix + getId(player)));
+  async exists(playerId) {
+    return Boolean(await this.client.sismember(prefix + this.chatId, playerPrefix + playerId));
   }
 
   random() {
-    const c = this.client;
-    return c.koka_srandmember(prefix + this.chatId, 1)
-      .then(result => c.hget(result.pop(), 'username').then(r => [r]));
+    const { client, chatId } = this;
+    return client.koka_srandmember(prefix + chatId, 1)
+      .then(result => client.hget(result.pop(), 'username'));
   }
 }
 

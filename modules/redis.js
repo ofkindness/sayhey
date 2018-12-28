@@ -6,16 +6,21 @@ const srandmember = fs.readFileSync(path.join(__dirname, '/lua/srandmember.lua')
 const tomatoholders = fs.readFileSync(path.join(__dirname, '/lua/tomatoholders.lua'), 'utf8');
 
 
-const redisClient = new Redis(process.env.REDIS_URL);
+let redisClient;
 
-redisClient.defineCommand('koka_srandmember', {
-  numberOfKeys: 2,
-  lua: srandmember
-});
+if (['development', 'staging', 'production'].includes(process.env.NODE_ENV)) {
+  redisClient = new Redis(process.env.REDIS_URL);
 
-redisClient.defineCommand('tomatoholders', {
-  numberOfKeys: 2,
-  lua: tomatoholders
-});
+  redisClient.defineCommand('koka_srandmember', {
+    numberOfKeys: 2,
+    lua: srandmember
+  });
+
+  redisClient.defineCommand('tomatoholders', {
+    numberOfKeys: 2,
+    lua: tomatoholders
+  });
+}
+
 
 module.exports = { redisClient };

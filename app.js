@@ -1,3 +1,5 @@
+require('dotenv').load({ silent: true });
+
 const bugsnag = require('@bugsnag/js');
 const bugsnagExpress = require('@bugsnag/plugin-express');
 const cookieParser = require('cookie-parser');
