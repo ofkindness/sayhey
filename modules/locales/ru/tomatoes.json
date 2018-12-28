@@ -1,3 +1,6 @@
 {
-  "holders": "Держатели томатов:\n\n%s"
+  "holders": "Держатели томатов:\n\n{{holders}}",
+  "holder_0": "{{num}}) {{username}} {{count}} томат",
+  "holder_1": "{{num}}) {{username}} {{count}} томатa",
+  "holder_2": "{{num}}) {{username}} {{count}} томатов"
 }

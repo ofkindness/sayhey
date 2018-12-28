@@ -1,7 +1,7 @@
 {
-  "limit": "I already responded to this message less than an hour ago %s",
-  "play": "Winner today is %s",
-  "top": "TOP 10:\n\n%s\n\nAll players - %s",
-  "welcome": "Welcome to the game %s",
-  "winner": "Hey %s, the winner for today is %s"
+  "limit": "I already responded to this message less than an hour ago {{username}}",
+  "play": "Winner today is {{winner}}",
+  "top": "TOP 10:\n\n{{players}}\n\nAll players - {{count}}",
+  "welcome": "Welcome to the game {{username}}",
+  "winner": "Hey, {{winner}} you are the winner today"
 }
