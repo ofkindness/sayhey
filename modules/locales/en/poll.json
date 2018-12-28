@@ -1,0 +1,10 @@
+{
+  "default0": "Yes",
+  "default1": "No",
+  "default3": "I'm tomato",
+  "defaultQuestion": "Do you like tomatoes?",
+  "emptyQuestion": "No question - no vote!",
+  "voted": "Congratulations! You have successfully voted for %s",
+  "alreadyVoted": "It will not work, you can not vote a second time, accept the answer %s",
+  "totalVotes": "Total votes: %s."
+}

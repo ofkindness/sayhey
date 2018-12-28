@@ -1,0 +1,5 @@
+{
+  "holders": "Tomato holders:\n\n{{holders}}",
+  "holder": "{{num}}) {{username}} has {{count}} tomato",
+  "holder_plural": "{{num}}) {{username}} has {{count}} tomatoes"
+}
