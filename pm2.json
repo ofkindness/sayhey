@@ -1,0 +1,15 @@
+{
+    "apps": [{
+        "name": "sayhey",
+        "script": "start",
+        "cwd": "./bin",
+        "instances": 2,
+        "merge_logs": true,
+        "exec_mode": "cluster_mode",
+        "watch": true,
+        "ignore_watch": ["logs"],
+        "error_file": "../logs/sayhey.error.log",
+        "out_file": "../logs/sayhey.out.log",
+        "pid_file": "../sayhey.pid"
+    }]
+}

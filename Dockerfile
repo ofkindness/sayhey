@@ -1,4 +1,4 @@
-FROM node:boron-alpine
+FROM node:node:10-alpine
 
 MAINTAINER Andrei Tretyakov <andrei.tretyakov@gmail.com>
 
