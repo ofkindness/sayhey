@@ -6,7 +6,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node ./bin/start",
-    "test": "mocha --recursive"
+    "test": "mocha --recursive -- spec"
   },
   "dependencies": {
     "@bugsnag/js": "^5.1.0",

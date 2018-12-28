@@ -1,3 +1,8 @@
+# sayhey
+
+[![CircleCI](https://circleci.com/gh/ofkindness/sayhey/tree/master.svg?style=svg)](https://circleci.com/gh/ofkindness/sayhey/tree/master)
+[![Dependency Status](https://david-dm.org/ofkindness/sayhey.svg?theme=shields.io)](https://david-dm.org/ofkindness/sayhey)
+
 Sayhey telegram bot
 ===================
 
@@ -10,8 +15,8 @@ Installation
 ------------
 
 ```console
-  $ git clone https://github.com/ofkindness/sayhey.xyz.git
-  $ cd sayhey.xyz && npm i
+  $ git clone https://github.com/ofkindness/sayhey.git
+  $ cd sayhey && npm i
 ```
 
 Dockerize
@@ -23,26 +28,11 @@ docker build -t sayhey .
 docker run -e NODE_ENV=development -e TELEGRAM_TOKEN=yourtelegramtoken --name sayhey --link redis -p 127.0.0.1:3000:3000 -d sayhey
 ```
 
-Start frontend
---------------
-
-```console
-npm start
-```
-
-Build frontend
---------------
-
-```console
-npm run build
-```
-
-
 Start bot
------
+---------
 
 ```console
-DEBUG=* WEBHOOK_URL=yourapiurl TELEGRAM_TOKEN=yourtelegramtoken npm run bot
+DEBUG=* WEBHOOK_URL=yourapiurl TELEGRAM_TOKEN=yourtelegramtoken npm start
 ```
 
 Tests
