@@ -4,6 +4,7 @@ const i18nextBackend = require('i18next-node-fs-backend');
 const { format, promisify } = require('util');
 
 const { dispatcher } = require('../../bot');
+const limiter = require('../../limiter');
 const Game = require('../../models/game');
 const Member = require('../../models/member');
 const Player = require('../../models/player');
@@ -64,16 +65,21 @@ dispatcher.command('/hey', async (req, res) => {
 dispatcher.command('/heynour', async (req, res) => {
   const { chat: { id: chatId }, from: initiator } = req;
   const { language_code: lng } = initiator;
-  const member = new Member(chatId);
-  const player = new Player(chatId);
 
   try {
     await i18next.use(i18nextBackend).init(Object.assign(i18nextOptions, { lng }));
 
-    const results = await member.best();
-    const count = await player.count();
+    if (limiter(chatId)) {
+      const member = new Member(chatId);
+      const player = new Player(chatId);
 
-    return res.sendMessage(chatId, format(i18next.t('top'), results.join('\n'), count));
+      const results = await member.best();
+      const count = await player.count();
+
+      return res.sendMessage(chatId, format(i18next.t('top'), results.join('\n'), count));
+    }
+
+    return res.sendMessage(chatId, format(i18next.t('limit'), getName(initiator)));
   } catch (e) {
     return notify(e);
   }

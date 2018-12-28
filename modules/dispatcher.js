@@ -48,15 +48,3 @@ module.exports.Dispatcher = (bot) => {
     command: (cmd, fn) => Object.assign(commands, { [cmd]: msg => fn.call(null, msg, bot) })
   };
 };
-
-// const { RateLimiter } = require('limiter');
-
-// const limiter = new RateLimiter(1, 'hour', true);
-
-// limiter.removeTokens(1, (err, remainingRequests) => {
-//   if (remainingRequests < 0) {
-//     return bot.sendMessage(id, `Я отвечал на это не больше часа назад, ${username}`);
-//   }
-//
-//   return handleCommand(command)(msg);
-// });

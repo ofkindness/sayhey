@@ -1,4 +1,5 @@
 {
+  "limit": "I already responded to this message less than an hour ago %s",
   "play": "Winner today is %s",
   "top": "TOP 10:\n\n%s\n\nAll players - %s",
   "welcome": "Welcome to the game %s",
