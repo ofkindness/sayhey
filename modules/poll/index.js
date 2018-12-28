@@ -1,4 +1,3 @@
-const bugsnag = require('@bugsnag/js');
 const i18next = require('i18next');
 const i18nextBackend = require('i18next-node-fs-backend');
 const uniq = require('lodash.uniq');
@@ -6,6 +5,7 @@ const uniq = require('lodash.uniq');
 const { dispatcher } = require('../bot');
 const { generateResults } = require('./choice');
 const Poll = require('../models/poll');
+const { notify } = require('../logger');
 const { msgOptions } = require('../utils');
 
 const i18nextOptions = {
@@ -17,7 +17,6 @@ const i18nextOptions = {
   defaultNS: 'poll',
   debug: true
 };
-const { notify } = bugsnag(process.env.BUGSNAG_API_KEY);
 
 const defaultOptions = {
   0: i18next.t('default0'),

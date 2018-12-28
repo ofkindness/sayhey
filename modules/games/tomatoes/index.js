@@ -1,8 +1,8 @@
-const bugsnag = require('@bugsnag/js');
 const i18next = require('i18next');
 const i18nextBackend = require('i18next-node-fs-backend');
 
 const { dispatcher } = require('../../bot');
+const { notify } = require('../../logger');
 
 const i18nextOptions = {
   backend: {
@@ -14,9 +14,6 @@ const i18nextOptions = {
   debug: true
 };
 const Player = require('../../models/player');
-// const { declOfNum3 } = require('../../utils');
-
-const { notify } = bugsnag(process.env.BUGSNAG_API_KEY);
 
 dispatcher.command('/tomatoes', async (req, res) => {
   const { chat: { id: chatId }, from: { language_code: lng } } = req;

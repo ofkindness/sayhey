@@ -1,10 +1,10 @@
-const bugsnag = require('@bugsnag/js');
 const i18next = require('i18next');
 const i18nextBackend = require('i18next-node-fs-backend');
 const { promisify } = require('util');
 
 const { dispatcher } = require('../../bot');
 const limiter = require('../../limiter');
+const { notify } = require('../../logger');
 const Game = require('../../models/game');
 const Member = require('../../models/member');
 const Player = require('../../models/player');
@@ -18,7 +18,7 @@ const i18nextOptions = {
   ns: ['heyoftheday'],
   defaultNS: 'heyoftheday'
 };
-const { notify } = bugsnag(process.env.BUGSNAG_API_KEY);
+
 const timeout = promisify(setTimeout);
 
 dispatcher.command('/hey', async (req, res) => {
