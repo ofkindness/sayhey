@@ -1,9 +1,9 @@
-const bugsnag = require('@bugsnag/js');
 const i18next = require('i18next');
 const i18nextBackend = require('i18next-node-fs-backend');
 const { format } = require('util');
 
 const Poll = require('../models/poll');
+const { notify } = require('../logger');
 const { msgOptions } = require('../utils');
 
 const i18nextOptions = {
@@ -15,7 +15,6 @@ const i18nextOptions = {
   defaultNS: 'poll',
   debug: true
 };
-const { notify } = bugsnag(process.env.BUGSNAG_API_KEY);
 
 // get marked up results with percentage and poo bars.
 const generateResults = (options, results) => {

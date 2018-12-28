@@ -1,7 +1,5 @@
 require('dotenv').load({ silent: true });
 
-const bugsnag = require('@bugsnag/js');
-const bugsnagExpress = require('@bugsnag/plugin-express');
 const cookieParser = require('cookie-parser');
 const express = require('express');
 const httpErrors = require('http-errors');
@@ -11,11 +9,8 @@ const path = require('path');
 const indexRouter = require('./routes/index');
 const webhookRouter = require('./routes/webhook');
 
-const bugsnagClient = bugsnag(process.env.BUGSNAG_API_KEY);
-bugsnagClient.use(bugsnagExpress);
-
 const app = express();
-const { errorHandler, requestHandler } = bugsnagClient.getPlugin('express');
+const { errorHandler, requestHandler } = require('./modules/logger');
 
 app.use(logger('dev'));
 app.use(express.json());
