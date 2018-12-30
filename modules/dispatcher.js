@@ -1,6 +1,5 @@
+const bot = require('./bot');
 const { makeChoice } = require('./poll/choice');
-
-const commands = {};
 
 const parseCommand = (msg) => {
   const { entities = [], text = '' } = msg;
@@ -16,35 +15,55 @@ const parseCommand = (msg) => {
   return null;
 };
 
-const messageType = () => 'poll';
+const handleChoice = (msg, res) => {
+  const messageType = () => 'poll';
 
-const handleChoice = (msg, bot) => {
   const { message_id: messageId } = msg;
   switch (messageType(messageId)) {
     case 'poll':
     default:
-      return makeChoice(msg, bot);
+      return makeChoice(msg, res);
   }
 };
 
-//
-const handleCommand = (msg) => {
-  const command = parseCommand(msg);
+class Dispatcher {
+  constructor() {
+    this.commands = {};
+    this.bot = bot();
 
-  if (command && commands[command]) {
-    return commands[command](msg);
+    this.bot.on('message', (msg) => {
+      const command = parseCommand(msg);
+
+      if (command && this.commands[command]) {
+        return this.commands[command](msg);
+      }
+
+      // default command
+      return this.commands.default(msg);
+    });
+
+    this.bot.on('callback_query', msg => handleChoice(msg, this.bot));
   }
 
-  // default command
-  return commands.default(msg);
-};
+  dispatch(msg) {
+    this.bot.processUpdate(msg);
+  }
 
-module.exports.Dispatcher = (bot) => {
-  bot.on('message', msg => handleCommand(msg));
-  bot.on('callback_query', msg => handleChoice(msg, bot));
+  command(cmd, fn) {
+    Object.assign(this.commands, { [cmd]: msg => fn.call(null, msg, this.bot) });
+  }
+}
+
+module.exports = (() => {
+  let instance;
 
   return {
-    dispatch: msg => bot.processUpdate(msg),
-    command: (cmd, fn) => Object.assign(commands, { [cmd]: msg => fn.call(null, msg, bot) })
+    Dispatcher: () => {
+      if (instance == null) {
+        instance = new Dispatcher();
+        instance.constructor = null;
+      }
+      return instance;
+    }
   };
-};
+})();

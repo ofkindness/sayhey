@@ -1,7 +1,9 @@
 const i18next = require('i18next');
 const i18nextBackend = require('i18next-node-fs-backend');
 
-const { dispatcher } = require('../bot');
+const { Dispatcher } = require('../dispatcher');
+
+const dispatcher = Dispatcher();
 
 const i18nextOptions = {
   backend: {

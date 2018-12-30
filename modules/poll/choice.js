@@ -1,6 +1,5 @@
 const i18next = require('i18next');
 const i18nextBackend = require('i18next-node-fs-backend');
-const { format } = require('util');
 
 const Poll = require('../models/poll');
 const { notify } = require('../logger');
@@ -35,7 +34,7 @@ const generateResults = (options, results) => {
          ${bar} <b>${percentage} %</b>
         `);
   });
-  resultStr = resultStr.concat(format(i18next.t('totalVotes'), total));
+  resultStr = resultStr.concat(i18next.t('totalVotes', { totalVotes: total }));
   return resultStr;
 };
 
@@ -71,7 +70,7 @@ const makeChoice = async (req, res) => {
     data: choiceId
   } = req;
 
-  await i18next.use(i18nextBackend).init(Object.assign(i18nextOptions, lng));
+  await i18next.use(i18nextBackend).init(Object.assign(i18nextOptions, { lng }));
 
   const poll = new Poll(chatId, voteId);
 
@@ -85,11 +84,11 @@ const makeChoice = async (req, res) => {
         await poll.vote(choiceId, userId);
         const choice = await poll.getOption(parseInt(choiceId, 10));
         await updateMessage(req.message, res);
-        return res.answerCallbackQuery(id, format(i18next.t('voted'), choice));
+        return res.answerCallbackQuery(id, i18next.t('voted', { voted: choice }));
       }
       // no user already voted, no changing mind allowed!
       const choice = await poll.getOption(optionId);
-      return res.answerCallbackQuery(id, format(i18next.t('alreadyVoted'), choice));
+      return res.answerCallbackQuery(id, i18next.t('alreadyVoted', { alreadyVoted: choice }));
     }
 
     return null;

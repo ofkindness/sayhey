@@ -6,7 +6,9 @@ require('../modules/poll');
 
 const { Router } = require('express');
 
-const { dispatcher } = require('../modules/bot');
+const { Dispatcher } = require('../modules/dispatcher');
+
+const dispatcher = Dispatcher();
 
 const router = Router();
 

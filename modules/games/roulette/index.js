@@ -3,9 +3,10 @@ const i18nextBackend = require('i18next-node-fs-backend');
 const Random = require('random-js');
 const { format } = require('util');
 
-const { dispatcher } = require('../../bot');
+const { Dispatcher } = require('../../dispatcher');
 const { getName } = require('../../utils');
 
+const dispatcher = Dispatcher();
 const i18nextOptions = {
   backend: {
     loadPath: `${__dirname}/../../locales/{{lng}}/{{ns}}.json`
