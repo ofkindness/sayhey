@@ -2,12 +2,13 @@ const i18next = require('i18next');
 const i18nextBackend = require('i18next-node-fs-backend');
 const uniq = require('lodash.uniq');
 
-const { dispatcher } = require('../bot');
+const { Dispatcher } = require('../dispatcher');
 const { generateResults } = require('./choice');
 const Poll = require('../models/poll');
 const { notify } = require('../logger');
 const { msgOptions } = require('../utils');
 
+const dispatcher = Dispatcher();
 const i18nextOptions = {
   backend: {
     loadPath: `${__dirname}/../locales/{{lng}}/{{ns}}.json`
@@ -30,7 +31,7 @@ const defaultQuestion = i18next.t('defaultQuestion');
 dispatcher.command('/poll', async (req, res) => {
   const { chat: { id: chatId }, from: { language_code: lng } } = req;
 
-  await i18next.use(i18nextBackend).init(Object.assign(i18nextOptions, lng));
+  await i18next.use(i18nextBackend).init(Object.assign(i18nextOptions, { lng }));
 
   let { text: input = '' } = req;
 
