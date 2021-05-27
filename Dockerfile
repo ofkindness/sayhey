@@ -1,6 +1,6 @@
-FROM node:node:10-alpine
+FROM node:16-alpine
 
-MAINTAINER Andrei Tretyakov <andrei.tretyakov@gmail.com>
+LABEL maintainer="Andrei Tretyakov <andrei.tretyakov@gmail.com>"
 
 RUN ln -fs /usr/share/zoneinfo/Europe/Moscow /etc/localtime && apk add --update tzdata
 
