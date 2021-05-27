@@ -1,22 +1,20 @@
-#!/usr/bin/env node
+import { config } from 'dotenv';
+import http from 'http';
+import { debuglog } from 'util';
 
-/**
- * Module dependencies.
- */
-require('dotenv').load({ silent: true });
+// import ngrok from 'ngrok';
 
-const debug = require('debug')('sayhey:server');
-const http = require('http');
-const ngrok = require('ngrok');
+import app from './app';
+// import bot from ('../modules/bot');
 
-const app = require('../app');
-const bot = require('../modules/bot');
+
+config();
+debuglog('postgres');
 
 /**
  * Normalize a port into a number, string, or false.
  */
-
-function normalizePort(val) {
+function normalizePort(val: string) {
   const port = parseInt(val, 10);
 
   if (Number.isNaN(port)) {
@@ -40,12 +38,17 @@ const port = normalizePort(process.env.PORT || '3000');
 
 app.set('port', port);
 
+interface Error {
+    syscall?: string;
+    code?: string;
+}
+
 (async () => {
   /**
    * Setup webhook url.
    */
 
-  bot(process.env.WEBHOOK_URL || await ngrok.connect(port));
+//   bot(process.env.WEBHOOK_URL || await ngrok.connect(port));
 
   /**
    * Create HTTP server.
@@ -63,7 +66,7 @@ app.set('port', port);
    * Event listener for HTTP server "error" event.
    */
   /* eslint no-console: 0 */
-  server.on('error', (error) => {
+  server.on('error', (error: Error) => {
     if (error.syscall !== 'listen') {
       throw error;
     }
@@ -95,8 +98,8 @@ app.set('port', port);
     const addr = server.address();
     const bind = typeof addr === 'string'
       ? `pipe ${addr}`
-      : `port ${addr.port}`;
-    debug(`Listening on ${bind}`);
+      : `port ${addr?.port}`;
+    debuglog(`Listening on ${bind}`);
   });
 
   return null;
