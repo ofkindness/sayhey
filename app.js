@@ -1,4 +1,4 @@
-require('dotenv').load({ silent: true });
+const { config } = require('dotenv');
 
 const cookieParser = require('cookie-parser');
 const express = require('express');
@@ -9,6 +9,7 @@ const path = require('path');
 const indexRouter = require('./routes/index');
 const webhookRouter = require('./routes/webhook');
 
+config();
 const app = express();
 const { errorHandler, requestHandler } = require('./modules/logger');
 
