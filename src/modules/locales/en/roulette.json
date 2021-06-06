@@ -1,0 +1,11 @@
+{
+  "init": "What should we bet to play with you %s? \nThe tomatoes!",
+  "next": "This is exactly what I wanted to offer you..\nTake a gun,",
+  "start": "charge one round and give me.",
+  "havefun": "That's it.\nHave fun, %s.\nAnd drink for courage.\n",
+  "firstRound": "%s is drinking.",
+  "thirdRound": "you are a brave man, repeat?\n - No problem",
+  "shoot": "*shooting...",
+  "shootPlayer": "%s shooting...",
+  "end": "Well done, %s.\nIt was fun."
+}

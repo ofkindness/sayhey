@@ -4,7 +4,7 @@ const router = Router();
 
 router.get('/', (_, res: Response) => {
   res.json({
-    title: 'Webhook'
+    title: 'Webhook',
   });
 });
 

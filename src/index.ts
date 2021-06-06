@@ -7,7 +7,6 @@ import { debuglog } from 'util';
 import app from './app';
 // import bot from ('../modules/bot');
 
-
 config();
 debuglog('postgres');
 
@@ -39,8 +38,8 @@ const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 interface Error {
-    syscall?: string;
-    code?: string;
+  syscall?: string;
+  code?: string;
 }
 
 (async () => {
@@ -48,7 +47,7 @@ interface Error {
    * Setup webhook url.
    */
 
-//   bot(process.env.WEBHOOK_URL || await ngrok.connect(port));
+  //   bot(process.env.WEBHOOK_URL || await ngrok.connect(port));
 
   /**
    * Create HTTP server.
@@ -71,9 +70,7 @@ interface Error {
       throw error;
     }
 
-    const bind = typeof port === 'string'
-      ? `Pipe ${port}`
-      : `Port ${port}`;
+    const bind = typeof port === 'string' ? `Pipe ${port}` : `Port ${port}`;
 
     // handle specific listen errors with friendly messages
     switch (error.code) {
@@ -96,9 +93,7 @@ interface Error {
 
   server.on('listening', () => {
     const addr = server.address();
-    const bind = typeof addr === 'string'
-      ? `pipe ${addr}`
-      : `port ${addr?.port}`;
+    const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr?.port}`;
     debuglog(`Listening on ${bind}`);
   });
 
